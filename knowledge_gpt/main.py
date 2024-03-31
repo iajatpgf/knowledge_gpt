@@ -21,13 +21,13 @@ from knowledge_gpt.core.utils import get_llm
 
 EMBEDDING = "openai"
 VECTOR_STORE = "faiss"
-MODEL_LIST = ["gpt-3.5-turbo", "gpt-4"]
+MODEL_LIST = ["gpt-3.5-turbo", "gpt-4-0125-preview"]
 
 # Uncomment to enable debug mode
 # MODEL_LIST.insert(0, "debug")
 
 st.set_page_config(page_title="KnowledgeGPT", page_icon="📖", layout="wide")
-st.header("📖KnowledgeGPT")
+st.header("📖文件分析GPT")
 
 # Enable caching for expensive functions
 bootstrap_caching()
@@ -39,20 +39,21 @@ openai_api_key = st.session_state.get("OPENAI_API_KEY")
 
 if not openai_api_key:
     st.warning(
-        "Enter your OpenAI API key in the sidebar. You can get a key at"
+        "请在侧边档输入你的 OpenAI API key. 你可以在下面网站中获得"
         " https://platform.openai.com/account/api-keys."
     )
 
 
 uploaded_file = st.file_uploader(
-    "Upload a pdf, docx, or txt file",
+    "上传一个 pdf, docx, 或 txt 文件",
     type=["pdf", "docx", "txt"],
     help="Scanned documents are not supported yet!",
 )
 
-model: str = st.selectbox("Model", options=MODEL_LIST)  # type: ignore
+"请选择你要使用的模型, 温馨提示：gpt 4模型效果更好，但是费用更高"
+model: str = st.selectbox("模型", options=MODEL_LIST)  # type: ignore
 
-with st.expander("Advanced Options"):
+with st.expander("高级设置"):
     return_all_chunks = st.checkbox("Show all chunks retrieved from vector search")
     show_full_doc = st.checkbox("Show parsed contents of the document")
 
